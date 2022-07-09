@@ -32,9 +32,10 @@ export class PostEntity extends BaseEntity {
 
   @Column({
     name: 'created_at',
-    type: process.env.NODE_ENV === "production" ? 'timestamp' : 'datetime',
-    default: () => 'NOW()',
+    // type: process.env.NODE_ENV === "production" ? 'timestamp' : 'datetime',
+    // default: () => 'NOW()',
   })
+  createdAt: string;
 
   @ManyToOne(type => UserEntity, user => user.posts)
   @JoinColumn({ name: 'user_uid', referencedColumnName: 'uid' })
@@ -44,11 +45,13 @@ export class PostEntity extends BaseEntity {
     userId: string,
     title: string,
     description: string,
+    createdAt: string,
   ) {
     super();
     this.uid = randomUUID();
     this.userUid = userId;
     this.title = title;
     this.description = description;
+    this.createdAt = createdAt;
   }
 }

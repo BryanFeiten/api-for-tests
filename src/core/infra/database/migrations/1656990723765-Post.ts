@@ -32,8 +32,8 @@ export class Post1656990723765 implements MigrationInterface {
                 },
                 {
                     name: 'created_at',
-                    type: 'timestamp',
-                    default: 'now()',
+                    type: 'varchar',
+                    length: '23',
                     isNullable: false,
                 },
             ],
