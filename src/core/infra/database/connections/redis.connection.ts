@@ -6,18 +6,10 @@ export class RedisConnection {
 
     static initialize() {
         if (!this.connection) {
-            // this.connection = new ioredis({
-            //     host: "",
-            //     password: "",
-            //     port: 1000,
-            //     username: ""
-            // });
-
-            const redisUrl = process.env.REDIS_URL_HEROKU;
-            this.connection = new ioredis(redisUrl, {
-                tls: {
-                    rejectUnauthorized: false,
-                },
+            this.connection = new ioredis(process.env.REDIS_PORT, {
+                host: process.env.REDIS_HOST,
+                password: process.env.REDIS_PASSWORD,
+                username: process.env.REDIS_USERNAME,
             });
         }
 

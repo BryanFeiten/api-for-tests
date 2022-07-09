@@ -1,6 +1,6 @@
-import { makeRoutes } from "./../routes/index";
-import express from "express";
-import cors from "cors";
+import { makeRoutes } from './../routes/index';
+import express from 'express';
+import cors from 'cors';
 
 export class Server {
     static initialize() {
@@ -10,8 +10,8 @@ export class Server {
 
         makeRoutes(app);
 
-        app.listen(process.env.PORT || 8081, () => {
-            console.log("Server is running.");
+        app.listen(process.env.PORT, () => {
+            console.log(`Server running on port ${process.env.PORT}`);
         });
     }
 }

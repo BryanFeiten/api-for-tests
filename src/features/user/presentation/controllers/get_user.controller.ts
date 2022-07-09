@@ -1,6 +1,5 @@
-import { CreateUserUseCase } from "../../domain/usecases/create-user-usecase";
 import { Request, Response } from "express";
-import { GetUserUseCase } from "../../domain/usecases/get-user-usecase";
+import { GetUserUseCase } from "../../domain/usecases/get_user.usecase";
 
 export class GetUserController {
     async handle(request: Request, response: Response) {
@@ -11,15 +10,14 @@ export class GetUserController {
             const result = await useCase.run(username);
 
             return response.status(200).send({
-                ok: true,
+                success: true,
                 data: result,
-                message: "everything is ok",
+                statusCode: 200,
             });
         } catch (error) {
             return response.status(500).send({
-                ok: false,
+                success: false,
                 message: error instanceof Error ? error.message : "unknown",
-                exception: true,
             });
         }
     }

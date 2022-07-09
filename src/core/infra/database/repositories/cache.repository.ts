@@ -1,4 +1,4 @@
-import { RedisConnection } from "../connections/redis-connection";
+import { RedisConnection } from "../connections/redis.connection";
 
 export class CacheRepository {
     private connection = RedisConnection.getConnection();

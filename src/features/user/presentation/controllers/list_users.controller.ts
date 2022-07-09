@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { ListUserUseCase } from "../../domain/usecases/list-users-usecase";
+import { ListUserUseCase } from "../../domain/usecases/list_users.usecase";
 
 export class ListUserController {
     async handle(request: Request, response: Response) {
@@ -8,15 +8,14 @@ export class ListUserController {
             const result = await useCase.run();
 
             return response.status(200).send({
-                ok: true,
-                message: "ok",
+                success: true,
                 data: result,
+                statusCode: 200,
             });
         } catch (error) {
             return response.status(500).send({
-                ok: false,
+                success: false,
                 message: error instanceof Error ? error.message : "unknown",
-                exception: true,
             });
         }
     }

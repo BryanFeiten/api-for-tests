@@ -1,29 +1,78 @@
-import { Column, Entity, PrimaryColumn, UpdateDateColumn } from "typeorm";
-import { IUser } from "../../../../features/user/domain/contracts/user";
+import { AfterLoad, BaseEntity, BeforeInsert, BeforeUpdate, Column, Entity, OneToMany, PrimaryColumn } from "typeorm";
+import * as bcrypt from 'bcrypt';
+import { randomUUID } from "crypto";
+import { PostEntity } from "./post";
 
-@Entity()
-export class User implements IUser {
-    @PrimaryColumn({
-        length: 50,
-    })
-    username: string;
+@Entity({ name: 'user' })
+export class UserEntity extends BaseEntity {
+  @PrimaryColumn({
+    length: 50,
+  })
+  uid: string;
 
-    @Column({
-        length: 50,
-    })
-    name: string;
+  @Column({
+    length: 30,
+  })
+  username: string;
 
-    @Column({
-        length: 30,
-    })
-    password: string;
+  @Column({
+    name: 'first_name',
+    length: 30,
+  })
+  firstName: string;
 
-    @Column({
-        length: 50,
-        nullable: true,
-    })
-    city?: string;
+  @Column({
+    name: 'last_name',
+    length: 30,
+  })
+  lastName: string;
 
-    @UpdateDateColumn()
-    updatedAt: Date;
+  @Column({
+    length: 100,
+  })
+  email: string;
+
+  @Column({
+    length: 75,
+  })
+  password: string;
+
+  private tempPassword?: string;
+
+  @BeforeInsert()
+  hashPassword() {
+    this.password = bcrypt.hashSync(this.password, 10);
+  }
+
+  @AfterLoad()
+  loadTempPassword(): void {
+    this.tempPassword = this.password;
+  }
+
+
+  @BeforeUpdate()
+  encryptPassword(): void {
+    if (this.tempPassword !== this.password) {
+      this.hashPassword();
+    }
+  }
+
+  @OneToMany(type => PostEntity, post => post.userUid)
+  posts?: PostEntity[];
+
+  constructor(
+    username: string,
+    firstName: string,
+    lastName: string,
+    email: string,
+    password: string,
+  ) {
+    super();
+    this.uid = randomUUID();
+    this.username = username;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.email = email;
+    this.password = password;
+  }
 }
