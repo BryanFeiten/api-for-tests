@@ -6,24 +6,23 @@ import { UserDto } from "../../domain/dto/user.dto";
 export class UpdateUserController {
     async handle(request: Request, response: Response) {
         try {
-            const { firstName, lastName } = request.body;
+            const { userUid, firstName, lastName } = request.body;
 
             const useCase = new UpdateUserUseCase();
             await useCase.run(
-                new UserDto('', firstName, lastName, '', ''),
+                new UserDto(userUid, firstName.trim(), lastName.trim(), '', ''),
             );
 
             return response.status(200).send({
                 ok: true,
-                message: "ok",
+                data: true,
             });
         } catch (error) {
             return response.status(500).send({
                 ok: false,
-                message: error instanceof Error
+                data: error instanceof Error
                     ? error.message
                     : "unknown",
-                exception: true,
             });
         }
     }

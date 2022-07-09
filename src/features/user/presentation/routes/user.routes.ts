@@ -1,7 +1,8 @@
+import { Request, Response, Router } from 'express';
+
 import { UpdateUserController } from '../controllers/update_user.controller';
 import { DeleteUserController } from '../controllers/delete_user.controller';
 import { CreateUserController } from '../controllers/create_user.controller';
-import { Request, Response, Router } from 'express';
 import { GetUserController } from '../controllers/get_user.controller';
 import { ListUserController } from '../controllers/list_users.controller';
 import { createUserMiddleware } from '../middlewares/create_user.middleware';
@@ -10,23 +11,23 @@ export class UserRoutes {
     static getRoutes() {
         const router = Router();
 
-        router.post('/users', createUserMiddleware, (request: Request, response: Response) => {
+        router.post('/', createUserMiddleware, (request: Request, response: Response) => {
             return new CreateUserController().handle(request, response);
         });
 
-        router.get('/users/:userUid', (request: Request, response: Response) => {
+        router.get('/:username', (request: Request, response: Response) => {
             return new GetUserController().handle(request, response);
         });
 
-        router.get('/users', (request: Request, response: Response) => {
+        router.get('/', (request: Request, response: Response) => {
             return new ListUserController().handle(request, response);
         });
 
-        router.delete('/users', (request: Request, response: Response) => {
+        router.delete('/:userUid', (request: Request, response: Response) => {
             return new DeleteUserController().handle(request, response);
         });
 
-        router.put('/users', (request: Request, response: Response) => {
+        router.put('/', (request: Request, response: Response) => {
             return new UpdateUserController().handle(request, response);
         });
 

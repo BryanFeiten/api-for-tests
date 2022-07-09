@@ -1,20 +1,23 @@
+import { UserEntity } from "../../../../core/infra/database/entities/user";
 import { CacheRepository } from "../../../../core/infra/database/repositories/cache.repository";
 import { caractersLengthValidator, emailValidator } from "../../../../shared/utils/helpers";
 import { UserRepository } from "../../infra/database/repositories/user.repository";
 import { UserDto } from "../dto/user.dto";
 
 export class CreateUserUseCase {
+    // async run(user: UserDto): Promise<boolean> {
     async run(user: UserDto): Promise<boolean> {
         const repository = new UserRepository();
         // const cacheRepository = new CacheRepository();
+        // let userCreated: boolean;
         let userCreated: boolean;
 
-        caractersLengthValidator(user.username.trim(), 'Nome de Usuário', 30, 3);
-        caractersLengthValidator(user.firstName.trim(), 'Nome', 30, 3);
-        caractersLengthValidator(user.lastName.trim(), 'Sobrenome', 30, 3);
-        caractersLengthValidator(user.email.trim(), 'E-mail', 100, 10);
+        caractersLengthValidator(user.username.trim(), 'Nome de Usuário', 3, 30);
+        caractersLengthValidator(user.firstName.trim(), 'Nome', 3, 30);
+        caractersLengthValidator(user.lastName.trim(), 'Sobrenome', 3, 30);
+        caractersLengthValidator(user.email.trim(), 'E-mail', 10, 100);
         emailValidator(user.email.trim());
-        caractersLengthValidator(user.password.trim(), 'Senha', 75, 6);
+        caractersLengthValidator(user.password.trim(), 'Senha', 6, 75);
 
         try {
             const emailAlreadyExists = await repository.getByEmail(user.email);

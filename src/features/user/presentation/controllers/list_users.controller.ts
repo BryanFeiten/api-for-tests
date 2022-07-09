@@ -15,7 +15,7 @@ export class ListUserController {
         } catch (error) {
             return response.status(500).send({
                 success: false,
-                message: error instanceof Error ? error.message : "unknown",
+                data: error instanceof Error ? error.message : "unknown",
             });
         }
     }

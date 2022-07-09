@@ -16,11 +16,11 @@ export class CreateUserController {
             const useCase = new CreateUserUseCase();
             const result = await useCase.run(
                 new UserDto(
-                    username,
-                    firstName,
-                    lastName,
-                    email,
-                    password,
+                    username.trim(),
+                    firstName.trim(),
+                    lastName.trim(),
+                    email.trim(),
+                    password.trim(),
                 ),
             );
     
@@ -32,7 +32,7 @@ export class CreateUserController {
         } catch (error) {
             return response.status(500).send({
                 success: false,
-                message: error instanceof Error ? error.message : "unknown",
+                data: error instanceof Error ? error.message : "unknown",
             });
         }
     }

@@ -1,4 +1,6 @@
 import { getRepository, Repository } from "typeorm";
+
+import '../../../../../shared/utils/extension_methods';
 import { UserEntity } from "../../../../../core/infra/database/entities/user";
 import { UserDto } from "../../../domain/dto/user.dto";
 
@@ -54,8 +56,7 @@ export class UserRepository {
 
     async update(user: UserDto, actualUser: UserEntity): Promise<boolean> {
         actualUser.firstName = user.firstName && user.firstName.isNotEmpty() ? user.firstName : actualUser.firstName;
-        actualUser.firstName = user.lastName && user.lastName.isNotEmpty() ? user.lastName : actualUser.lastName;
-        actualUser.lastName = user.lastName ?? actualUser.lastName;
+        actualUser.lastName = user.lastName && user.lastName.isNotEmpty() ? user.lastName : actualUser.lastName;
 
         const updated = !!await this._repository.save(actualUser);
 
