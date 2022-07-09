@@ -5,7 +5,6 @@ import { UserRepository } from "../../infra/database/repositories/user.repositor
 import { UserDto } from "../dto/user.dto";
 
 export class CreateUserUseCase {
-    // async run(user: UserDto): Promise<boolean> {
     async run(user: UserDto): Promise<boolean> {
         const repository = new UserRepository();
         // const cacheRepository = new CacheRepository();
