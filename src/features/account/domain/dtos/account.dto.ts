@@ -1,4 +1,4 @@
-export class UserDto {
+export class AccountDto {
   public uid?: string;
   public username: string;
   public firstName: string;
