@@ -1,8 +1,8 @@
-export const caractersLengthValidator = (field: string, fieldName: string, minLength: number, maxLength: number) => {
+export const charactersLengthValidator = (field: string, fieldName: string, minLength: number, maxLength?: number,) => {
   if (field.length < minLength) {
       throw new Error(`O campo ${fieldName} deve conter pelo menos ${minLength} caractéres`);
   }
-  if (field.length > maxLength) {
+  if (maxLength ? field.length > maxLength : false) {
       throw new Error(`O campo ${fieldName} excedeu o número máximo (${maxLength}) de caractéres`);
   }
 }
