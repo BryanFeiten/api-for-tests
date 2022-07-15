@@ -1,4 +1,9 @@
-import {MigrationInterface, QueryRunner, Table, TableForeignKey} from "typeorm";
+import {
+    MigrationInterface,
+    QueryRunner,
+    Table,
+    TableForeignKey,
+} from "typeorm";
 
 export class Post1656990723765 implements MigrationInterface {
 
@@ -14,7 +19,7 @@ export class Post1656990723765 implements MigrationInterface {
                     isNullable: false,
                 },
                 {
-                    name: 'user_uid',
+                    name: 'account_uid',
                     type: 'varchar',
                     length: '50',
                     isNullable: false,
@@ -38,8 +43,8 @@ export class Post1656990723765 implements MigrationInterface {
                 },
             ],
             foreignKeys: [new TableForeignKey({
-                columnNames: ['user_uid'],
-                referencedTableName: 'user',
+                columnNames: ['account_uid'],
+                referencedTableName: 'account',
                 referencedColumnNames: ['uid'],
             })],
         }));

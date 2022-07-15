@@ -1,10 +1,20 @@
-import { AfterLoad, BaseEntity, BeforeInsert, BeforeUpdate, Column, Entity, OneToMany, PrimaryColumn } from "typeorm";
+import {
+  AfterLoad,
+  BaseEntity,
+  BeforeInsert,
+  BeforeUpdate,
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryColumn,
+} from "typeorm";
 import * as bcrypt from 'bcrypt';
 import { randomUUID } from "crypto";
+
 import { PostEntity } from "./post";
 
-@Entity({ name: 'user' })
-export class UserEntity extends BaseEntity {
+@Entity({ name: 'account' })
+export class AccountEntity extends BaseEntity {
   @PrimaryColumn({
     length: 50,
   })
@@ -57,7 +67,7 @@ export class UserEntity extends BaseEntity {
     }
   }
 
-  @OneToMany(type => PostEntity, post => post.userUid)
+  @OneToMany(type => PostEntity, post => post.accountUid)
   posts?: PostEntity[];
 
   constructor(

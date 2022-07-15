@@ -1,4 +1,3 @@
-import { randomUUID } from "crypto";
 import {
   Entity,
   BaseEntity,
@@ -7,7 +6,9 @@ import {
   ManyToOne,
   JoinColumn,
 } from "typeorm";
-import { UserEntity } from "./user";
+import { randomUUID } from "crypto";
+
+import { AccountEntity } from "./account";
 
 @Entity({ name: 'post' })
 export class PostEntity extends BaseEntity {
@@ -17,10 +18,10 @@ export class PostEntity extends BaseEntity {
   uid: string;
 
   @Column({
-    name: 'user_uid',
+    name: 'account_uid',
     length: 50,
   })
-  userUid: string;
+  accountUid: string;
 
   @Column({
     length: 50,
@@ -37,19 +38,19 @@ export class PostEntity extends BaseEntity {
   })
   createdAt: string;
 
-  @ManyToOne(type => UserEntity, user => user.posts)
-  @JoinColumn({ name: 'user_uid', referencedColumnName: 'uid' })
-  user?: UserEntity;
+  @ManyToOne(type => AccountEntity, account => account.posts)
+  @JoinColumn({ name: 'account_uid', referencedColumnName: 'uid' })
+  account?: AccountEntity;
 
   constructor(
-    userId: string,
+    accountId: string,
     title: string,
     description: string,
     createdAt: string,
   ) {
     super();
     this.uid = randomUUID();
-    this.userUid = userId;
+    this.accountUid = accountId;
     this.title = title;
     this.description = description;
     this.createdAt = createdAt;
