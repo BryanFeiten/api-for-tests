@@ -6,7 +6,7 @@ import {
 
 import '../../../../shared/utils/extension_methods';
 
-export function createAccountMiddleware(
+export function CreateAccountMiddleware(
   request: Request,
   response: Response,
   next: NextFunction,
@@ -20,24 +20,48 @@ export function createAccountMiddleware(
   } = request.body;
 
   if ((username as string).trim().isEmpty()) {
-    throw new Error('Campo Nome de Usuário não foi preenchido');
+    return response.status(400).send({
+      success: false,
+      data: 'Campo Nome de Usuário não foi preenchido',
+    });
   };
 
   if ((firstName as string).trim().isEmpty()) {
-    throw new Error('Campo Nome não foi preenchido');
+    return response.status(400).send({
+      success: false,
+      data: 'Campo Nome não foi preenchido',
+    });
   };
 
   if ((lastName as string).trim().isEmpty()) {
-    throw new Error('Campo Sobrenome não foi preenchido');
+    return response.status(400).send({
+      success: false,
+      data: 'Campo Sobrenome não foi preenchido',
+    });
   };
 
   if ((email as string).trim().isEmpty()) {
-    throw new Error('Campo E-mail não foi preenchido');
+    return response.status(400).send({
+      success: false,
+      data: 'Campo E-mail não foi preenchido',
+    });
   };
 
   if ((password as string).trim().isEmpty()) {
-    throw new Error('Campo Senha não foi preenchido');
+    return response.status(400).send({
+      success: false,
+      data: 'Campo Senha não foi preenchido',
+    });
   };
 
   next();
+  console.log(request.route['path']);
+  console.log(request.method);
+  /**
+   *  crerateAccount  - POST    /
+   *  getAccountByUid - GET     /:username
+   *  listAccounts    - GET     /
+   *  deleteAccount   - DELETE  /
+   *  updateAccount   - PUT     /
+   */
 };
