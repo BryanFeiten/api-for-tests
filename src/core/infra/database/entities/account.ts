@@ -8,7 +8,7 @@ import {
   OneToMany,
   PrimaryColumn,
 } from "typeorm";
-import * as bcrypt from 'bcrypt';
+import { hashSync } from 'bcrypt';
 import { randomUUID } from "crypto";
 
 import { PostEntity } from "./post";
@@ -51,7 +51,7 @@ export class AccountEntity extends BaseEntity {
 
   @BeforeInsert()
   hashPassword() {
-    this.password = bcrypt.hashSync(this.password, 10);
+    this.password = hashSync(this.password, 10);
   }
 
   @AfterLoad()

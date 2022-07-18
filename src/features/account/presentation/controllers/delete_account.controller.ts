@@ -8,8 +8,10 @@ import { DeleteAccountUseCase } from "../../domain/usecases/delete_account.useca
 export class DeleteAccountController {
     async handle(request: Request, response: Response) {
         try {
-            const { accountUid } = request.params;
-            const password = request.body.password;
+            const {
+                accountUid,
+                password,
+            } = request.body;
 
             const useCase = new DeleteAccountUseCase();
 

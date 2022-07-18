@@ -1,4 +1,4 @@
-import * as bcrypt from 'bcrypt';
+import { compare } from 'bcrypt';
 
 import { AccountRepository } from "../../infra/database/repositories/account.repository";
 
@@ -13,7 +13,7 @@ export class DeleteAccountUseCase {
             throw new Error("Usuário não encontrado");
         }
 
-        if (!(await bcrypt.compare(password, account.password))) {
+        if (!(await compare(password, account.password))) {
             throw new Error('Senha incorreta');
         }
 
