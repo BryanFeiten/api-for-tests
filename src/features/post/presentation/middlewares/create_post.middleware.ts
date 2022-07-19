@@ -14,14 +14,14 @@ export function CreatePostMiddleware(
 
   const { title, description } = request.body;
 
-  if (title.trim().isEmpty()) {
+  if (!title || title.trim().isEmpty()) {
     return response.status(400).send({
       success: false,
       data: 'Campo Título não foi preenchido',
     });
   }
 
-  if (description.trim().isEmpty()) {
+  if (!description || description.trim().isEmpty()) {
     return response.status(400).send({
       success: false,
       data: 'Campo Descrição não foi preenchido',

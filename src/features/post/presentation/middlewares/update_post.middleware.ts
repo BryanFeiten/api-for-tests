@@ -14,12 +14,19 @@ export function UpdatePostMiddleware(
 
   const { title, description } = request.body;
 
-  if (title.trim().isEmpty() && description.trim().isEmpty()) {
+  if (!title && !description) {
     return response.status(400).send({
       success: false,
       data: 'É obrigatório o preenchimento do campo Título e/ou Descrição',
     });
   }
-  
-  next();
+
+  if (title && title.trim().isNotEmpty()) next();
+
+  if (description && description.trim().isNotEmpty()) next();
+
+  return response.status(400).send({
+    success: false,
+    data: 'É obrigatório o preenchimento do campo Título e/ou Descrição',
+  });
 }

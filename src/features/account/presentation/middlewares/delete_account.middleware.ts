@@ -13,7 +13,7 @@ export function DeleteAccountMiddleware(
 ) {
   const { password } = request.body;
 
-  if ((password as string).trim().isEmpty()) {
+  if (!password || password.trim().isEmpty()) {
     return response.status(400).send({
       success: false,
       data: 'Campo Senha não foi preenchido',

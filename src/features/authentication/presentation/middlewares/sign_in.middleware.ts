@@ -13,14 +13,14 @@ export function SignInMiddleware(
 ) {
   const { email, password } = request.body;
 
-  if ((email as string).trim().isEmpty()) {
+  if (!email || email.trim().isEmpty()) {
     return response.status(400).send({
       success: false,
       data: 'Campo E-mail não foi preenchido',
     });
   };
 
-  if ((password as string).trim().isEmpty()) {
+  if (!password || password.trim().isEmpty()) {
     return response.status(400).send({
       success: false,
       data: 'Campo Senha não foi preenchido',

@@ -19,35 +19,35 @@ export function CreateAccountMiddleware(
     password,
   } = request.body;
 
-  if ((username as string).trim().isEmpty()) {
+  if (!username || username.trim().isEmpty()) {
     return response.status(400).send({
       success: false,
       data: 'Campo Nome de Usuário não foi preenchido',
     });
   };
 
-  if ((firstName as string).trim().isEmpty()) {
+  if (!firstName || firstName.trim().isEmpty()) {
     return response.status(400).send({
       success: false,
       data: 'Campo Nome não foi preenchido',
     });
   };
 
-  if ((lastName as string).trim().isEmpty()) {
+  if (!firstName || lastName.trim().isEmpty()) {
     return response.status(400).send({
       success: false,
       data: 'Campo Sobrenome não foi preenchido',
     });
   };
 
-  if ((email as string).trim().isEmpty()) {
+  if (!email || email.trim().isEmpty()) {
     return response.status(400).send({
       success: false,
       data: 'Campo E-mail não foi preenchido',
     });
   };
 
-  if ((password as string).trim().isEmpty()) {
+  if (!password || password.trim().isEmpty()) {
     return response.status(400).send({
       success: false,
       data: 'Campo Senha não foi preenchido',

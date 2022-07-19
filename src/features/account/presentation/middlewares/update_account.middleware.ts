@@ -4,7 +4,7 @@ import {
   Response,
 } from "express";
 
-import '../../../../shared/utils';
+import '../../../../shared/utils/extension_methods';
 
 export function UpdateAccountMiddleware(
   request: Request,
@@ -16,12 +16,19 @@ export function UpdateAccountMiddleware(
     lastName,
   } = request.body;
 
-  if (firstName.trim().isEmpty() && lastName.trim().isEmpty()) {
+  if (!firstName && !lastName) {
     return response.status(400).send({
       success: false,
       data: 'É obrigatório o preenchimento do campo nome e/ou sobrenome',
     });
   }
 
-  next();
+  if (firstName && firstName.trim().isNotEmpty()) next();
+
+  if (lastName && lastName.trim.isNotEmpty()) next();
+
+  return response.status(400).send({
+    success: false,
+    data: 'É obrigatório o preenchimento do campo nome e/ou sobrenome',
+  });
 };
