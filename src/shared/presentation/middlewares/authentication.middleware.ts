@@ -16,7 +16,7 @@ export async function AuthMiddleware(
   const bearerToken = request.headers.authorization;
 
   if (!bearerToken) {
-    return response.status(401).send({
+    return response.status(401).json({
       success: false,
       data: 'Usuário não autenticado',
     });
@@ -25,7 +25,7 @@ export async function AuthMiddleware(
   const [, token] = bearerToken.split(" ");
 
   if (!token) {
-    return response.status(401).send({
+    return response.status(401).json({
       success: false,
       data: 'Usuário não autenticado',
     });
@@ -39,7 +39,7 @@ export async function AuthMiddleware(
     request.body.authUser = authUser;
     next();
   } catch (error) {
-    return response.status(401).send({
+    return response.status(401).json({
       success: false,
       data: 'Usuário não autenticado',
       // data: 'Token inválido',

@@ -14,7 +14,7 @@ export function GetAccountByUsernameMiddleware(
   const { username } = request.body;
 
   if (!username || username.trim().isEmpty()) {
-    return response.status(400).send({
+    return response.status(400).json({
       success: false,
       data: 'Campo Nome de Usuário não foi preenchido',
     });

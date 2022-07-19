@@ -15,7 +15,7 @@ export function UpdatePostMiddleware(
   const { title, description } = request.body;
 
   if (!title && !description) {
-    return response.status(400).send({
+    return response.status(400).json({
       success: false,
       data: 'É obrigatório o preenchimento do campo Título e/ou Descrição',
     });
@@ -25,7 +25,7 @@ export function UpdatePostMiddleware(
 
   if (description && description.trim().isNotEmpty()) next();
 
-  return response.status(400).send({
+  return response.status(400).json({
     success: false,
     data: 'É obrigatório o preenchimento do campo Título e/ou Descrição',
   });

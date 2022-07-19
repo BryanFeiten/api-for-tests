@@ -17,7 +17,7 @@ export function UpdateAccountMiddleware(
   } = request.body;
 
   if (!firstName && !lastName) {
-    return response.status(400).send({
+    return response.status(400).json({
       success: false,
       data: 'É obrigatório o preenchimento do campo nome e/ou sobrenome',
     });
@@ -27,7 +27,7 @@ export function UpdateAccountMiddleware(
 
   if (lastName && lastName.trim.isNotEmpty()) next();
 
-  return response.status(400).send({
+  return response.status(400).json({
     success: false,
     data: 'É obrigatório o preenchimento do campo nome e/ou sobrenome',
   });

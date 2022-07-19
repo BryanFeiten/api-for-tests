@@ -17,26 +17,26 @@ export class SignInController {
             const result = await useCase.run(new SignInDto(email, password));
 
             if (result.isEmpty()) {
-                return response.status(500).send({
+                return response.status(500).json({
                     success: false,
                     data: 'E-mail ou Senha incorreto(s)',
                 });
             }
 
-            return response.status(200).send({
+            return response.status(200).json({
                 success: true,
                 data: result,
                 statusCode: 200,
             });
         } catch (error) {
             if (error instanceof CustomError) {
-                return response.status(error.code).send({
+                return response.status(error.code).json({
                     success: false,
                     data: error.message,
                 })
             }
 
-            return response.status(500).send({
+            return response.status(500).json({
                 success: false,
                 data: error instanceof Error ? error.message : "unknown",
             });
