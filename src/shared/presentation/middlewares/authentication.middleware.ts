@@ -34,9 +34,9 @@ export async function AuthMiddleware(
   const jwt = new JwtAdapter(process.env.JWT_SECRET as string);
 
   try {
-    const authUser = await jwt.decrypt(token);
+    const accountUid = await jwt.decrypt(token);
 
-    request.body.authUser = authUser;
+    request.body.accountUid = accountUid;
     next();
   } catch (error) {
     return response.status(401).json({
