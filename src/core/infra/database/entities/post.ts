@@ -43,14 +43,14 @@ export class PostEntity extends BaseEntity {
   account?: AccountEntity;
 
   constructor(
-    accountId: string,
+    accountUId: string,
     title: string,
     description: string,
     createdAt: string,
   ) {
     super();
     this.uid = randomUUID();
-    this.accountUid = accountId;
+    this.accountUid = accountUId;
     this.title = title;
     this.description = description;
     this.createdAt = createdAt;
