@@ -4,38 +4,47 @@ import {
     Router,
 } from 'express';
 
-import { CreatePostController } from '../controllers/create_post.controller';
-import { DeletePostController } from '../controllers/delete_post.controller';
-import { GetPostByUidController } from '../controllers/get_post_by_uid.controller';
-import { GetPostListController } from '../controllers/get_post_list.controller';
-import { GetPostListByAccountController } from '../controllers/get_post_list_by_account.controller';
-import { UpdatePostController } from '../controllers/update_post.controller';
+import { AuthMiddleware } from '../../../../shared/presentation/middlewares/authentication.middleware';
+
+import {
+    CreatePostMiddleware,
+    DeletePostMiddleware,
+    UpdatePostMiddleware,
+} from '../middlewares';
+import {
+    CreatePostController,
+    DeletePostController,
+    GetPostByUidController,
+    GetPostListController,
+    GetPostListByAccountController,
+    UpdatePostController
+} from '../controllers';
 
 export class PostRoutes {
     static getRoutes() {
         const router = Router();
 
-        router.post('/', (request: Request, response: Response) => {
+        router.post('/', [AuthMiddleware, CreatePostMiddleware], (request: Request, response: Response) => {
             return new CreatePostController().handle(request, response);
         });
 
-        router.get('/:uid', (request: Request, response: Response) => {
+        router.get('/:uid', [AuthMiddleware], (request: Request, response: Response) => {
             return new GetPostByUidController().handle(request, response);
         });
 
-        router.get('/user/:uid', (request: Request, response: Response) => {
+        router.get('/user/:uid', [AuthMiddleware], (request: Request, response: Response) => {
             return new GetPostListByAccountController().handle(request, response);
         });
 
-        router.get('/', (request: Request, response: Response) => {
+        router.get('/', [AuthMiddleware], (request: Request, response: Response) => {
             return new GetPostListController().handle(request, response);
         });
 
-        router.delete('/:uid', (request: Request, response: Response) => {
+        router.delete('/:uid', [AuthMiddleware, DeletePostMiddleware], (request: Request, response: Response) => {
             return new DeletePostController().handle(request, response);
         });
 
-        router.put('/:uid', (request: Request, response: Response) => {
+        router.put('/:uid', [AuthMiddleware, UpdatePostMiddleware], (request: Request, response: Response) => {
             return new UpdatePostController().handle(request, response);
         });
 
