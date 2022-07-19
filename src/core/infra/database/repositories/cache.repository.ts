@@ -8,7 +8,7 @@ export class CacheRepository {
     }
 
     async setEx(key: string, value: any) {
-        await this.connection.set(key, JSON.stringify(value), "EX", 15);
+        await this.connection.set(key, JSON.stringify(value), "EX", 43200);
     }
 
     async get(key: string): Promise<any> {

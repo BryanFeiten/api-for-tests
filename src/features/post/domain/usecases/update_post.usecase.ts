@@ -4,9 +4,11 @@ import { charactersLengthValidator } from "../../../../shared/utils/validators";
 import { PostRepository } from "../../infra/database/repositories/post.repository";
 import { PostDto } from "../dtos/post.dto";
 import { NotFoundError, ServerError } from '../../../../shared/presentation/errors';
+import { CacheRepository } from '../../../../core/infra/database/repositories/cache.repository';
 
 export class UpdatePostUseCase {
     async run(post: PostDto): Promise<PostEntity> {
+        const cacheRepository = new CacheRepository();
         const repository = new PostRepository();
 
         let actualPost: PostEntity;
@@ -31,6 +33,9 @@ export class UpdatePostUseCase {
         } catch (error) {
             throw new ServerError('Erro na comunicação com o banco');
         }
+
+        await cacheRepository.delete('posts');
+        await cacheRepository.setEx(`posts:${postUpdated.uid}`, postUpdated);
 
         return postUpdated;
     }

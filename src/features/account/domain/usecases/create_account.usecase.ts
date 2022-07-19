@@ -5,11 +5,13 @@ import {
 import { AccountDto } from "../dtos/account.dto";
 import { AccountRepository } from "../../infra/database/repositories/account.repository";
 import { BadRequestError, ServerError } from "../../../../shared/presentation/errors";
+import { CacheRepository } from "../../../../core/infra/database/repositories/cache.repository";
 
 export class CreateAccountUseCase {
     async run(account: AccountDto): Promise<boolean> {
         const repository = new AccountRepository();
-        // const cacheRepository = new CacheRepository();
+        const cacheRepository = new CacheRepository();
+
         let accountCreated: boolean;
 
         charactersLengthValidator(account.username.trim(), 'Nome de Usuário', 3, 30);
@@ -47,8 +49,7 @@ export class CreateAccountUseCase {
         if (!accountCreated) {
             throw new ServerError('Erro ao criar usuário');
         }
-        // await cacheRepository.set(`users:${user.username}`, user);
-        // await cacheRepository.delete("users");
+        await cacheRepository.delete("users");
 
         return accountCreated;
     }

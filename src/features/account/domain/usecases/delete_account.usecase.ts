@@ -1,11 +1,12 @@
 import { compare } from 'bcrypt';
+import { CacheRepository } from '../../../../core/infra/database/repositories/cache.repository';
 import { BadRequestError, ServerError } from '../../../../shared/presentation/errors';
 
 import { AccountRepository } from "../../infra/database/repositories/account.repository";
 
 export class DeleteAccountUseCase {
     async run(uid: string, password: string): Promise<void> {
-        // const cacheRepository = new CacheRepository();
+        const cacheRepository = new CacheRepository();
         const repository = new AccountRepository();
 
         const account = await repository.getByUid(uid);
@@ -24,11 +25,7 @@ export class DeleteAccountUseCase {
             throw new ServerError('Erro na comunicação com o banco');
         }
 
-        // cache geral
-        // await cacheRepository.delete("users");
-
-        // cache do user
-        // await cacheRepository.delete(`users:${username}`);
-        // await cacheRepository.setEx(`users:${username}`, user);
+        await cacheRepository.delete("users");
+        await cacheRepository.delete(`users:${account.username}`);
     }
 }

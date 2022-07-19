@@ -8,7 +8,7 @@ import { NotFoundError, ServerError } from '../../../../shared/presentation/erro
 
 export class UpdateAccountUseCase {
     async run(account: AccountDto): Promise<boolean> {
-        // const cacheRepository = new CacheRepository();
+        const cacheRepository = new CacheRepository();
         const repository = new AccountRepository();
         let actualAccount: AccountEntity | undefined;
         let accountUpdated: boolean;
@@ -35,12 +35,9 @@ export class UpdateAccountUseCase {
             throw new ServerError('Erro na comunicação com o banco');
         }
 
-        // cache geral
-        // await cacheRepository.delete("users");
+        await cacheRepository.delete("users");
 
-        // cache do user
-        // await cacheRepository.delete(`users:${params.username}`);
-        // await cacheRepository.setEx(`users:${params.username}`, user);
+        await cacheRepository.setEx(`users:${account.username}`, account);
         return accountUpdated;
     }
 }
