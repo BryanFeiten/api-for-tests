@@ -1,4 +1,5 @@
 import { AccountEntity } from "../../../../core/infra/database/entities/account";
+import { ServerError } from "../../../../shared/presentation/errors";
 import { AccountRepository } from "../../infra/database/repositories/account.repository";
 
 export class GetAccountListUseCase {
@@ -18,7 +19,7 @@ export class GetAccountListUseCase {
         try {
             accountList = await repository.list();
         } catch (error) {
-            throw new Error('Erro na comunicação com o banco');
+            throw new ServerError('Erro na comunicação com o banco');
         }
 
         // set no cache

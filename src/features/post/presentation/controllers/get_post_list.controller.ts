@@ -4,6 +4,7 @@ import {
 } from "express";
 
 import { GetPostListUseCase } from "../../domain/usecases";
+import { CustomError } from "../../../../shared/presentation/errors/custom.error";
 
 export class GetPostListController {
     async handle(request: Request, response: Response) {
@@ -17,6 +18,13 @@ export class GetPostListController {
                 statusCode: 200,
             });
         } catch (error) {
+            if (error instanceof CustomError) {
+                return response.status(error.code).send({
+                    success: false,
+                    data: error.message,
+                })
+            }
+
             return response.status(500).send({
                 success: false,
                 data: error instanceof Error ? error.message : "unknown",

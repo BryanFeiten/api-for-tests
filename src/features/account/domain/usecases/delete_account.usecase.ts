@@ -1,4 +1,5 @@
 import { compare } from 'bcrypt';
+import { BadRequestError, ServerError } from '../../../../shared/presentation/errors';
 
 import { AccountRepository } from "../../infra/database/repositories/account.repository";
 
@@ -10,17 +11,17 @@ export class DeleteAccountUseCase {
         const account = await repository.getByUid(uid);
 
         if (!account) {
-            throw new Error("Usuário não encontrado");
+            throw new BadRequestError("Usuário não encontrado");
         }
 
         if (!(await compare(password, account.password))) {
-            throw new Error('Senha incorreta');
+            throw new BadRequestError('Senha incorreta');
         }
 
         try {
             await repository.delete(uid);
         } catch (error) {
-            throw new Error('Erro na comunicação com o banco');
+            throw new ServerError('Erro na comunicação com o banco');
         }
 
         // cache geral

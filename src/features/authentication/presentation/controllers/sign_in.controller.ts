@@ -3,9 +3,10 @@ import {
     Response,
 } from "express";
 
-import '../../../../shared/utils';
-import { SignInUseCase } from "../../domain/usecases/sign_in.usecase";
+import '../../../../shared/utils/extension_methods';
 import { SignInDto } from "../../domain/dtos/sign_in.dto";
+import { SignInUseCase } from "../../domain/usecases/sign_in.usecase";
+import { CustomError } from "../../../../shared/presentation/errors/custom.error";
 
 export class SignInController {
     async handle(request: Request, response: Response) {
@@ -28,6 +29,13 @@ export class SignInController {
                 statusCode: 200,
             });
         } catch (error) {
+            if (error instanceof CustomError) {
+                return response.status(error.code).send({
+                    success: false,
+                    data: error.message,
+                })
+            }
+
             return response.status(500).send({
                 success: false,
                 data: error instanceof Error ? error.message : "unknown",

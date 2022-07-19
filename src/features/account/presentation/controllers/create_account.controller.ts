@@ -5,6 +5,7 @@ import {
 
 import { AccountDto } from "../../domain/dtos/account.dto";
 import { CreateAccountUseCase } from "../../domain/usecases";
+import { CustomError } from "../../../../shared/presentation/errors/custom.error";
 
 export class CreateAccountController {
     async handle(request: Request, response: Response) {
@@ -34,9 +35,16 @@ export class CreateAccountController {
                 statusCode: 200,
             });
         } catch (error) {
+            if (error instanceof CustomError) {
+                return response.status(error.code).send({
+                    success: false,
+                    data: error.message,
+                })
+            }
+
             return response.status(500).send({
                 success: false,
-                data: error instanceof Error ? error.message : "unknown",
+                data: "Erro inesperado, por favor entre em contato ou aguarde",
             });
         }
     }

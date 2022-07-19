@@ -5,6 +5,7 @@ import {
 import { AuthenticationRepository } from "../../infra/database/repositories/authentication.repository";
 import { SignInDto } from "../dtos/sign_in.dto";
 import { JwtAdapter } from "../../../../shared/adapters/jwt.adapter";
+import { BadRequestError } from "../../../../shared/presentation/errors";
 
 export class SignInUseCase {
     async run(signInDto: SignInDto): Promise<string> {
@@ -14,24 +15,27 @@ export class SignInUseCase {
 
         const repository = new AuthenticationRepository();
         let logged = false;
+        let userUid = '';
 
         try {
-            const userUid = await repository.getAccountByEmail(signInDto.email);
-
-            if (userUid.isEmpty()) {
-                throw new Error('E-mail ou Senha incorreto(s)');
-            }
-
-            logged = await repository.validatePassword(userUid, signInDto.password);
-
-            if (logged) {
-                const jwt = new JwtAdapter(process.env.JWT_SECRET as string);
-
-                return await jwt.encrypt(userUid);
-            }
-
+            userUid = await repository.getAccountByEmail(signInDto.email);
         } catch (error) {
-            throw new Error('Erro na comunicação com o banco');
+            throw new BadRequestError('E-mail ou Senha incorreto(s)');
+        }
+
+        if (userUid.isEmpty()) {
+            throw new BadRequestError('E-mail ou Senha incorreto(s)');
+        }
+        try {
+            logged = await repository.validatePassword(userUid, signInDto.password);
+        } catch (error) {
+            throw new BadRequestError('E-mail ou Senha incorreto(s)');
+        }
+
+        if (logged) {
+            const jwt = new JwtAdapter(process.env.JWT_SECRET as string);
+
+            return await jwt.encrypt(userUid);
         }
 
         return '';

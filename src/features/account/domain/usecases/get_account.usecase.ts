@@ -1,5 +1,6 @@
 import { AccountRepository } from "../../infra/database/repositories/account.repository";
 import { AccountEntity } from "../../../../core/infra/database/entities/account";
+import { ServerError } from "../../../../shared/presentation/errors";
 
 export class GetAccountUseCase {
     async run(username: string): Promise<AccountEntity> {
@@ -18,7 +19,7 @@ export class GetAccountUseCase {
         try {
             account = await repository.getByUsername(username);
         } catch (error) {
-            throw new Error('Erro na comunicação com o banco');
+            throw new ServerError('Erro na comunicação com o banco');
         }
 
         return account;

@@ -4,6 +4,7 @@ import {
 } from "express";
 
 import { DeletePostUseCase } from "../../domain/usecases";
+import { CustomError } from "../../../../shared/presentation/errors/custom.error";
 
 export class DeletePostController {
     async handle(request: Request, response: Response) {
@@ -21,6 +22,13 @@ export class DeletePostController {
                 statusCode: 200,
             });
         } catch (error) {
+            if (error instanceof CustomError) {
+                return response.status(error.code).send({
+                    success: false,
+                    data: error.message,
+                })
+            }
+
             return response.status(500).send({
                 success: false,
                 data: error instanceof Error ? error.message : "unknown",

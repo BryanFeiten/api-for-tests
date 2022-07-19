@@ -4,12 +4,13 @@ import { CacheRepository } from "../../../../core/infra/database/repositories/ca
 import { charactersLengthValidator } from "../../../../shared/utils/validators";
 import { AccountRepository } from "../../infra/database/repositories/account.repository";
 import { AccountDto } from "../dtos/account.dto";
+import { NotFoundError, ServerError } from '../../../../shared/presentation/errors';
 
 export class UpdateAccountUseCase {
     async run(account: AccountDto): Promise<boolean> {
         // const cacheRepository = new CacheRepository();
         const repository = new AccountRepository();
-        let actualAccount: AccountEntity;
+        let actualAccount: AccountEntity | undefined;
         let accountUpdated: boolean;
 
         if (account.firstName.isNotEmpty()) {
@@ -22,10 +23,16 @@ export class UpdateAccountUseCase {
 
         try {
             actualAccount = await repository.getByUid(account.uid!);
+        } catch (error) {
+            throw new NotFoundError('Usuário não encontrado');
+        }
+
+        try {
+            if (!actualAccount) throw new NotFoundError('Usuário não encontrado');
 
             accountUpdated = await repository.update(account, actualAccount);
         } catch (error) {
-            throw new Error('Erro na comunicação com o banco');
+            throw new ServerError('Erro na comunicação com o banco');
         }
 
         // cache geral

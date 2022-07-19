@@ -1,5 +1,6 @@
 import { PostRepository } from "../../infra/database/repositories/post.repository";
 import { PostEntity } from "../../../../core/infra/database/entities/post";
+import { NotFoundError } from "../../../../shared/presentation/errors";
 
 export class GetPostByUidUseCase {
     async run(uid: string): Promise<PostEntity> {
@@ -9,7 +10,7 @@ export class GetPostByUidUseCase {
         try {
             post = await repository.getByUid(uid);
         } catch (error) {
-            throw new Error("Postagem não encontrada");
+            throw new NotFoundError("Postagem não encontrada");
         }
 
         return post;

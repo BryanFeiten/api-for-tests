@@ -3,9 +3,10 @@ import {
     Response
 } from "express";
 
-import { UpdatePostUseCase } from "../../domain/usecases";
 import { PostDto } from "../../domain/dtos/post.dto";
+import { UpdatePostUseCase } from "../../domain/usecases";
 import { PostEntity } from "../../../../core/infra/database/entities/post";
+import { CustomError } from "../../../../shared/presentation/errors/custom.error";
 
 export class UpdatePostController {
     async handle(request: Request, response: Response) {
@@ -25,6 +26,13 @@ export class UpdatePostController {
                 data: postUpdated,
             });
         } catch (error) {
+            if (error instanceof CustomError) {
+                return response.status(error.code).send({
+                    success: false,
+                    data: error.message,
+                })
+            }
+
             return response.status(500).send({
                 ok: false,
                 data: error instanceof Error

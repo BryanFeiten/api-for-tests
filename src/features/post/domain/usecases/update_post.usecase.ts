@@ -3,6 +3,7 @@ import { PostEntity } from "../../../../core/infra/database/entities/post";
 import { charactersLengthValidator } from "../../../../shared/utils/validators";
 import { PostRepository } from "../../infra/database/repositories/post.repository";
 import { PostDto } from "../dtos/post.dto";
+import { NotFoundError, ServerError } from '../../../../shared/presentation/errors';
 
 export class UpdatePostUseCase {
     async run(post: PostDto): Promise<PostEntity> {
@@ -21,10 +22,14 @@ export class UpdatePostUseCase {
 
         try {
             actualPost = await repository.getByUid(post.uid!);
+        } catch (error) {
+            throw new NotFoundError('Postagem não encontrada');
+        }
 
+        try {
             postUpdated = await repository.update(post, actualPost);
         } catch (error) {
-            throw new Error('Erro na comunicação com o banco');
+            throw new ServerError('Erro na comunicação com o banco');
         }
 
         return postUpdated;
