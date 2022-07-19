@@ -5,11 +5,17 @@
     "main": "index.js",
     "scripts": {
         "start": "node ./dist/main.js",
-        "test": "echo \"Error: no test specified\" && exit 1",
         "dev": "ts-node-dev --respawn --transpile-only ./src/main.ts",
         "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js",
         "migration:run": "ts-node-dev --transpile-only ./node_modules/typeorm/cli.js migration:run",
-        "migration:revert": "ts-node-dev --transpile-only ./node_modules/typeorm/cli.js migration:revert"
+        "migration:revert": "ts-node-dev --transpile-only ./node_modules/typeorm/cli.js migration:revert",
+        "migration:test": "cross-env NODE_ENV=test && yarn migration:run",
+        "test:setup": "rimraf ./db-test.sql && yarn migration:test",
+        "test": "cross-env NODE_ENV=test && yarn test:setup && jest --passWithNoTests --silent --noStackTrace --runInBand",
+        "test:verbose": "cross-env NODE_ENV=test && yarn test:setup && jest --passWithNoTests --runInBand --detectOpenHandles",
+        "test:coverage": "test --coverage",
+        "test:unit": "tests --watchAll -c ./jest-unit.config.ts",
+        "test:integration": "tests --watchAll -c ./jest-integration.config.ts"
     },
     "repository": {
         "type": "git",
@@ -26,6 +32,7 @@
         "axios": "^0.24.0",
         "bcrypt": "^5.0.1",
         "cors": "^2.8.5",
+        "cross-env": "^7.0.3",
         "dotenv": "^16.0.1",
         "express": "^4.18.1",
         "ioredis": "^4.28.5",
@@ -42,9 +49,14 @@
         "@types/dotenv": "^8.2.0",
         "@types/express": "^4.17.13",
         "@types/ioredis": "^4.28.10",
+        "@types/jest": "^28.1.6",
         "@types/jsonwebtoken": "^8.5.8",
         "@types/node": "^16.11.7",
+        "@types/supertest": "^2.0.12",
         "@types/uuid": "^8.3.1",
+        "jest": "^28.1.3",
+        "supertest": "^6.2.4",
+        "ts-jest": "^28.0.7",
         "ts-node-dev": "^1.1.8",
         "typescript": "^4.4.4"
     }
