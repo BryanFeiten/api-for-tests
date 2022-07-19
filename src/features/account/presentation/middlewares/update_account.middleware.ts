@@ -4,7 +4,7 @@ import {
   Response,
 } from "express";
 
-import '../../../../shared/utils/extension_methods';
+import '../../../../shared/utils';
 
 export function UpdateAccountMiddleware(
   request: Request,
@@ -16,7 +16,7 @@ export function UpdateAccountMiddleware(
     lastName,
   } = request.body;
 
-  if (!firstName && !lastName) {
+  if (firstName.trim().isEmpty() && lastName.trim().isEmpty()) {
     return response.status(400).send({
       success: false,
       data: 'É obrigatório o preenchimento do campo nome e/ou sobrenome',

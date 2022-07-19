@@ -1,4 +1,4 @@
-import '../../../../shared/utils/extension_methods';
+import '../../../../shared/utils';
 import { AccountEntity } from "../../../../core/infra/database/entities/account";
 import { CacheRepository } from "../../../../core/infra/database/repositories/cache.repository";
 import { charactersLengthValidator } from "../../../../shared/utils/validators";

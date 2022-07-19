@@ -2,8 +2,8 @@ import {
     charactersLengthValidator,
     emailValidator,
 } from "../../../../shared/utils/validators";
-import { AccountRepository } from "../../infra/database/repositories/account.repository";
 import { AccountDto } from "../dtos/account.dto";
+import { AccountRepository } from "../../infra/database/repositories/account.repository";
 
 export class CreateAccountUseCase {
     async run(account: AccountDto): Promise<boolean> {

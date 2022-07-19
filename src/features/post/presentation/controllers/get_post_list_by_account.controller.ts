@@ -3,7 +3,7 @@ import {
     Response
 } from "express";
 
-import { GetPostListByAccountUseCase } from "../../domain/usecases/get_post_list_by_account.usecase";
+import { GetPostListByAccountUseCase } from "../../domain/usecases";
 
 export class GetPostListByAccountController {
     async handle(request: Request, response: Response) {

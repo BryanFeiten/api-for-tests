@@ -3,7 +3,7 @@ import {
     Response
 } from "express";
 
-import { GetPostListUseCase } from "../../domain/usecases/get_post_list.usecase";
+import { GetPostListUseCase } from "../../domain/usecases";
 
 export class GetPostListController {
     async handle(request: Request, response: Response) {

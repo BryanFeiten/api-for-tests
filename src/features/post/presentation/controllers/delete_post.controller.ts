@@ -3,7 +3,7 @@ import {
     Response
 } from "express";
 
-import { DeletePostUseCase } from "../../domain/usecases/delete_post.usecase";
+import { DeletePostUseCase } from "../../domain/usecases";
 
 export class DeletePostController {
     async handle(request: Request, response: Response) {

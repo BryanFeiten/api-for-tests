@@ -1,4 +1,4 @@
-import '../../../../shared/utils/extension_methods';
+import '../../../../shared/utils';
 
 export class PostDto {
   public uid?: string;

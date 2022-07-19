@@ -3,7 +3,7 @@ import {
     Response
 } from "express";
 
-import { GetPostByUidUseCase } from "../../domain/usecases/get_post_by_uid.usecase";
+import { GetPostByUidUseCase } from "../../domain/usecases";
 
 export class GetPostByUidController {
     async handle(request: Request, response: Response) {

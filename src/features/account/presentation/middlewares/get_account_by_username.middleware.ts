@@ -4,7 +4,7 @@ import {
   Response,
 } from "express";
 
-import '../../../../shared/utils/extension_methods';
+import '../../../../shared/utils';
 
 export function GetAccountByUsernameMiddleware(
   request: Request,

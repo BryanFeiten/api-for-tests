@@ -3,8 +3,8 @@ import {
     Response,
 } from "express";
 
-import { CreateAccountUseCase } from "../../domain/usecases/create_account.usecase";
 import { AccountDto } from "../../domain/dtos/account.dto";
+import { CreateAccountUseCase } from "../../domain/usecases";
 
 export class CreateAccountController {
     async handle(request: Request, response: Response) {

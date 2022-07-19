@@ -3,8 +3,8 @@ import {
     Response
 } from "express";
 
-import { UpdateAccountUseCase } from "../../domain/usecases/update_account.usecase";
 import { AccountDto } from "../../domain/dtos/account.dto";
+import { UpdateAccountUseCase } from "../../domain/usecases";
 
 export class UpdateAccountController {
     async handle(request: Request, response: Response) {

@@ -3,7 +3,7 @@ import {
     Response
 } from "express";
 
-import { GetAccountListUseCase } from "../../domain/usecases/get_account_list.usecase";
+import { GetAccountListUseCase } from "../../domain/usecases";
 
 export class AccountListController {
     async handle(request: Request, response: Response) {

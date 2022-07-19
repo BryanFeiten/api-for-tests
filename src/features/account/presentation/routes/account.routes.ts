@@ -4,15 +4,21 @@ import {
     Router,
 } from 'express';
 
-import { UpdateAccountController } from '../controllers/update_account.controller';
-import { DeleteAccountController } from '../controllers/delete_account.controller';
-import { CreateAccountController } from '../controllers/create_account.controller';
-import { GetAccountController } from '../controllers/get_account.controller';
-import { AccountListController } from '../controllers/account_list.controller';
-import { CreateAccountMiddleware } from '../middlewares/create_account.middleware';
-import { UpdateAccountMiddleware } from '../middlewares/update_account.middleware';
-import { DeleteAccountMiddleware } from '../middlewares/delete_account.middleware';
-import { GetAccountByUsernameMiddleware } from '../middlewares/get_account_by_username.middleware';
+import {
+    AccountListController,
+    CreateAccountController,
+    DeleteAccountController,
+    GetAccountController,
+    UpdateAccountController,
+} from '../controllers';
+
+import {
+    CreateAccountMiddleware,
+    DeleteAccountMiddleware,
+    GetAccountByUsernameMiddleware,
+    UpdateAccountMiddleware,
+} from '../middlewares';
+
 import { AuthMiddleware } from '../../../../shared/presentation/middlewares/authentication.middleware';
 
 export class AccountRoutes {

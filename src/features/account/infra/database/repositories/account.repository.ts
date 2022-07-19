@@ -3,10 +3,9 @@ import {
     Repository,
 } from "typeorm";
 
-import '../../../../../shared/utils/extension_methods';
+import '../../../../../shared/utils';
 import { AccountEntity } from "../../../../../core/infra/database/entities/account";
 import { AccountDto } from "../../../domain/dtos/account.dto";
-
 
 export class AccountRepository {
     private _repository: Repository<AccountEntity>;

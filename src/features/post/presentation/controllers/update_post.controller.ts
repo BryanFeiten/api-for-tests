@@ -3,7 +3,7 @@ import {
     Response
 } from "express";
 
-import { UpdatePostUseCase } from "../../domain/usecases/update_post.usecase";
+import { UpdatePostUseCase } from "../../domain/usecases";
 import { PostDto } from "../../domain/dtos/post.dto";
 import { PostEntity } from "../../../../core/infra/database/entities/post";
 

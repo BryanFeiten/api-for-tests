@@ -3,7 +3,7 @@ import {
     Response
 } from "express";
 
-import { DeleteAccountUseCase } from "../../domain/usecases/delete_account.usecase";
+import { DeleteAccountUseCase } from "../../domain/usecases";
 
 export class DeleteAccountController {
     async handle(request: Request, response: Response) {

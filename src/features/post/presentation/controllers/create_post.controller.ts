@@ -3,7 +3,7 @@ import {
     Response,
 } from "express";
 
-import { CreatePostUseCase } from "../../domain/usecases/create_post.usecase";
+import { CreatePostUseCase } from "../../domain/usecases";
 import { PostDto } from "../../domain/dtos/post.dto";
 
 export class CreatePostController {

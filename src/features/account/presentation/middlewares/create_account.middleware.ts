@@ -4,7 +4,7 @@ import {
   Response,
 } from "express";
 
-import '../../../../shared/utils/extension_methods';
+import '../../../../shared/utils';
 
 export function CreateAccountMiddleware(
   request: Request,
@@ -55,13 +55,4 @@ export function CreateAccountMiddleware(
   };
 
   next();
-  console.log(request.route['path']);
-  console.log(request.method);
-  /**
-   *  crerateAccount  - POST    /
-   *  getAccountByUid - GET     /:username
-   *  listAccounts    - GET     /
-   *  deleteAccount   - DELETE  /
-   *  updateAccount   - PUT     /
-   */
 };

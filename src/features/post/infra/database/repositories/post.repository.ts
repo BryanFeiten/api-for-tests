@@ -3,7 +3,7 @@ import {
   Repository,
 } from "typeorm";
 
-import '../../../../../shared/utils/extension_methods';
+import '../../../../../shared/utils';
 import { PostEntity } from "../../../../../core/infra/database/entities/post";
 import { PostDto } from "../../../domain/dtos/post.dto";
 

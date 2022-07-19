@@ -1,4 +1,4 @@
-import '../../../../shared/utils/extension_methods';
+import '../../../../shared/utils';
 import { PostEntity } from "../../../../core/infra/database/entities/post";
 import { charactersLengthValidator } from "../../../../shared/utils/validators";
 import { PostRepository } from "../../infra/database/repositories/post.repository";
