@@ -10,6 +10,7 @@ import {
 } from "typeorm";
 import { hashSync } from 'bcrypt';
 import { randomUUID } from "crypto";
+import 'dotenv/config';
 
 import { PostEntity } from "./post";
 
@@ -51,7 +52,7 @@ export class AccountEntity extends BaseEntity {
 
   @BeforeInsert()
   hashPassword() {
-    this.password = hashSync(this.password, 10);
+    this.password = hashSync(this.password, Number(process.env.BCRYPT_SALT));
   }
 
   @AfterLoad()
