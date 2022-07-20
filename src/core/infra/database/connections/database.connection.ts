@@ -1,21 +1,24 @@
 import { Connection, createConnection } from "typeorm";
 
 export class DatabaseConnection {
-    private static _connection: Connection;
+    private static instance: Connection;
 
-    static async initialize() {
-        if (!this._connection) {
-            this._connection = await createConnection();
+    static async getInstance() {
+        if (!DatabaseConnection.instance) {
+            const database = new DatabaseConnection();
+            DatabaseConnection.instance = await database.openConnection();
         }
 
-        console.info("Database is connected.");
+        console.log('Database is connected')
+
+        return DatabaseConnection.instance;
     }
 
-    static getConnection() {
-        if (!this._connection) {
-            throw new Error("Database is not connected.");
+    private async openConnection() {
+        try {
+            return await createConnection();
+        } catch (error) {
+            throw new Error(`Erro ao conectar no banco: ${error}`);
         }
-
-        return this._connection;
     }
 }

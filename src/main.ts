@@ -4,7 +4,7 @@ import { DatabaseConnection } from './core/infra/database/connections/database.c
 import 'dotenv/config';
 import { RedisConnection } from './core/infra/database/connections/redis.connection';
 
-DatabaseConnection.initialize().then(() => {
+DatabaseConnection.getInstance().then(() => {
     RedisConnection.initialize();
     Server.initialize();
 });
