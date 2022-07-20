@@ -11,7 +11,7 @@ export function GetAccountByUsernameMiddleware(
   response: Response,
   next: NextFunction,
 ) {
-  const { username } = request.body;
+  const { username } = request.params;
 
   if (!username || username.trim().isEmpty()) {
     return response.status(400).json({
