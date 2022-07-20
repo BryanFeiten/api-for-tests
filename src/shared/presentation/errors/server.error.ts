@@ -1,9 +1,13 @@
 import { CustomError } from "./custom.error";
 
 export class ServerError extends CustomError {
+  name: string;
+  code: number;
+
   constructor(message: string) {
-    super(message);
-    this.name = 'ServerError';
-    this.code = 500;
+    const code = 500;
+    super(message, code);
+    this.name = 'NotFoundError';
+    this.code = code;
   }
 }

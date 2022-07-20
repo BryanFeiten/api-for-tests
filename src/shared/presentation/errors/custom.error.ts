@@ -1,3 +1,7 @@
+import supertest from "supertest";
+
 export abstract class CustomError extends Error {
-  code: number
+  constructor(name: string, public code: number) {
+    super(name);
+  }
 }
