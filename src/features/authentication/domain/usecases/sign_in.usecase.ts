@@ -8,17 +8,18 @@ import { JwtAdapter } from "../../../../shared/adapters/jwt.adapter";
 import { BadRequestError } from "../../../../shared/presentation/errors";
 
 export class SignInUseCase {
+    constructor(private repository: AuthenticationRepository) {}
+
     async run(signInDto: SignInDto): Promise<string> {
         charactersLengthValidator(signInDto.email.trim(), 'E-mail', 10, 100);
         emailValidator(signInDto.email.trim());
         charactersLengthValidator(signInDto.password.trim(), 'Senha', 6, 75);
 
-        const repository = new AuthenticationRepository();
         let logged = false;
         let userUid = '';
 
         try {
-            userUid = await repository.getAccountByEmail(signInDto.email);
+            userUid = await this.repository.getAccountByEmail(signInDto.email);
         } catch (error) {
             throw new BadRequestError('E-mail ou Senha incorreto(s)');
         }
@@ -27,7 +28,7 @@ export class SignInUseCase {
             throw new BadRequestError('E-mail ou Senha incorreto(s)');
         }
         try {
-            logged = await repository.validatePassword(userUid, signInDto.password);
+            logged = await this.repository.validatePassword(userUid, signInDto.password);
         } catch (error) {
             throw new BadRequestError('E-mail ou Senha incorreto(s)');
         }

@@ -9,12 +9,13 @@ import { SignInUseCase } from "../../domain/usecases/sign_in.usecase";
 import { CustomError } from "../../../../shared/presentation/errors/custom.error";
 
 export class SignInController {
+    constructor(private usecase: SignInUseCase) {}
+
     async handle(request: Request, response: Response) {
         try {
             const { email, password } = request.body;
 
-            const useCase = new SignInUseCase();
-            const result = await useCase.run(new SignInDto(email, password));
+            const result = await this.usecase.run(new SignInDto(email, password));
 
             if (result.isEmpty()) {
                 return response.status(500).json({
