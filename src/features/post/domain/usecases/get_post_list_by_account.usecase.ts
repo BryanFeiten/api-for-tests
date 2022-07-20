@@ -5,18 +5,21 @@ import { AccountRepository } from "../../../account/infra/database/repositories/
 import { CacheRepository } from "../../../../core/infra/database/repositories/cache.repository";
 
 export class GetPostListByAccountUseCase {
+    constructor(
+        private repository: PostRepository,
+        private cacheRepository: CacheRepository,
+        private accountRepository: AccountRepository,
+    ) { }
+
     async run(accountUid: string): Promise<PostEntity[]> {
-        const cacheRepository = new CacheRepository();
-        const accountRepository = new AccountRepository();
-        const repository = new PostRepository();
         let userExists = false;
 
-        const cachedPosts = await cacheRepository.get(`posts/user:${accountUid}`);
+        const cachedPosts = await this.cacheRepository.get(`posts/user:${accountUid}`);
 
         if (cachedPosts) return cachedPosts;
 
         try {
-            userExists = !!await accountRepository.getByUid(accountUid);
+            userExists = !!await this.accountRepository.getByUid(accountUid);
         } catch (error) {
             throw new ServerError('Erro na comunicação com o banco');
         }
@@ -26,12 +29,12 @@ export class GetPostListByAccountUseCase {
         let postList: PostEntity[] = [];
 
         try {
-            postList = await repository.getByAccountUid(accountUid);
+            postList = await this.repository.getByAccountUid(accountUid);
         } catch (error) {
             throw new ServerError('Erro na comunicação com o banco');
         }
 
-        await cacheRepository.setEx(`posts/user:${accountUid}`, postList);
+        await this.cacheRepository.setEx(`posts/user:${accountUid}`, postList);
 
         return postList;
     }

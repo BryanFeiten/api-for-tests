@@ -8,6 +8,8 @@ import { CreatePostUseCase } from "../../domain/usecases";
 import { CustomError } from "../../../../shared/presentation/errors/custom.error";
 
 export class CreatePostController {
+    constructor(private usecase: CreatePostUseCase) { }
+
     async handle(request: Request, response: Response) {
         try {
             const {
@@ -16,8 +18,7 @@ export class CreatePostController {
                 description,
             } = request.body;
 
-            const useCase = new CreatePostUseCase();
-            const result = await useCase.run(
+            const result = await this.usecase.run(
                 new PostDto(
                     accountUid,
                     title.trim(),

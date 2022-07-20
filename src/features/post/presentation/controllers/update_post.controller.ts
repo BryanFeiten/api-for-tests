@@ -9,6 +9,8 @@ import { PostEntity } from "../../../../core/infra/database/entities/post";
 import { CustomError } from "../../../../shared/presentation/errors/custom.error";
 
 export class UpdatePostController {
+    constructor(private usecase: UpdatePostUseCase) { }
+
     async handle(request: Request, response: Response) {
         const { uid } = request.params;
         const { accountUid, firstName, lastName } = request.body;
@@ -16,8 +18,7 @@ export class UpdatePostController {
         let postUpdated: PostEntity;
 
         try {
-            const useCase = new UpdatePostUseCase();
-            postUpdated = await useCase.run(
+            postUpdated = await this.usecase.run(
                 new PostDto(accountUid, firstName.trim() ?? '', lastName.trim() ?? '', uid),
             );
 

@@ -7,14 +7,14 @@ import { DeletePostUseCase } from "../../domain/usecases";
 import { CustomError } from "../../../../shared/presentation/errors/custom.error";
 
 export class DeletePostController {
+    constructor(private usecase: DeletePostUseCase) { }
+
     async handle(request: Request, response: Response) {
         try {
             const { uid } = request.params;
             const accountUid = request.body.accountUid;
 
-            const useCase = new DeletePostUseCase();
-
-            await useCase.run(uid, accountUid);
+            await this.usecase.run(uid, accountUid);
 
             return response.status(200).json({
                 success: true,

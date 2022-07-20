@@ -4,14 +4,13 @@ import { NotFoundError, ServerError, UnauthorizedError } from "../../../../share
 import { PostRepository } from "../../infra/database/repositories/post.repository";
 
 export class DeletePostUseCase {
-    async run(uid: string, accountUid: string): Promise<boolean> {
-        const cacheRepository = new CacheRepository();
-        const repository = new PostRepository();
+    constructor(private repository: PostRepository, private cacheRepository: CacheRepository) {}
 
+    async run(uid: string, accountUid: string): Promise<boolean> {
         let post: PostEntity;
 
         try {
-            post = await repository.getByUid(uid);
+            post = await this.repository.getByUid(uid);
         } catch (error) {
             throw new NotFoundError("Postagem não encontrada");
         }
@@ -23,13 +22,13 @@ export class DeletePostUseCase {
         let postDeleted = false;
 
         try {
-            postDeleted = await repository.delete(uid);
+            postDeleted = await this.repository.delete(uid);
         } catch (error) {
             throw new ServerError('Erro na comunicação com o banco');
         }
 
-        cacheRepository.delete('posts');
-        cacheRepository.delete(`posts:${uid}`);
+        this.cacheRepository.delete('posts');
+        this.cacheRepository.delete(`posts:${uid}`);
 
         return postDeleted;
     }

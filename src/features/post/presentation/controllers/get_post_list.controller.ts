@@ -7,10 +7,11 @@ import { GetPostListUseCase } from "../../domain/usecases";
 import { CustomError } from "../../../../shared/presentation/errors/custom.error";
 
 export class GetPostListController {
+    constructor(private usecase: GetPostListUseCase) { }
+
     async handle(request: Request, response: Response) {
         try {
-            const useCase = new GetPostListUseCase();
-            const result = await useCase.run();
+            const result = await this.usecase.run();
 
             return response.status(200).json({
                 success: true,

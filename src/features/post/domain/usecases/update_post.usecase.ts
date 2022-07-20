@@ -7,10 +7,9 @@ import { NotFoundError, ServerError } from '../../../../shared/presentation/erro
 import { CacheRepository } from '../../../../core/infra/database/repositories/cache.repository';
 
 export class UpdatePostUseCase {
-    async run(post: PostDto): Promise<PostEntity> {
-        const cacheRepository = new CacheRepository();
-        const repository = new PostRepository();
+    constructor(private repository: PostRepository, private cacheRepository: CacheRepository) {}
 
+    async run(post: PostDto): Promise<PostEntity> {
         let actualPost: PostEntity;
         let postUpdated: PostEntity;
 
@@ -23,19 +22,19 @@ export class UpdatePostUseCase {
         }
 
         try {
-            actualPost = await repository.getByUid(post.uid!);
+            actualPost = await this.repository.getByUid(post.uid!);
         } catch (error) {
             throw new NotFoundError('Postagem não encontrada');
         }
 
         try {
-            postUpdated = await repository.update(post, actualPost);
+            postUpdated = await this.repository.update(post, actualPost);
         } catch (error) {
             throw new ServerError('Erro na comunicação com o banco');
         }
 
-        await cacheRepository.delete('posts');
-        await cacheRepository.setEx(`posts:${postUpdated.uid}`, postUpdated);
+        await this.cacheRepository.delete('posts');
+        await this.cacheRepository.setEx(`posts:${postUpdated.uid}`, postUpdated);
 
         return postUpdated;
     }

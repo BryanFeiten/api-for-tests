@@ -7,12 +7,13 @@ import { GetPostByUidUseCase } from "../../domain/usecases";
 import { CustomError } from "../../../../shared/presentation/errors/custom.error";
 
 export class GetPostByUidController {
+    constructor(private usecase: GetPostByUidUseCase) { }
+
     async handle(request: Request, response: Response) {
         const { uid } = request.params;
-        const useCase = new GetPostByUidUseCase();
 
         try {
-            const result = await useCase.run(uid);
+            const result = await this.usecase.run(uid);
 
             return response.status(200).json({
                 success: true,
