@@ -8,6 +8,8 @@ import { CreateAccountUseCase } from "../../domain/usecases";
 import { CustomError } from "../../../../shared/presentation/errors/custom.error";
 
 export class CreateAccountController {
+    constructor(private usecase: CreateAccountUseCase) {}
+
     async handle(request: Request, response: Response) {
         try {
             const {
@@ -18,8 +20,7 @@ export class CreateAccountController {
                 password,
             } = request.body;
 
-            const useCase = new CreateAccountUseCase();
-            const result = await useCase.run(
+            const result = await this.usecase.run(
                 new AccountDto(
                     username.trim(),
                     firstName.trim(),

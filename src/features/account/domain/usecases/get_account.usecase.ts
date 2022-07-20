@@ -4,12 +4,12 @@ import { ServerError } from "../../../../shared/presentation/errors";
 import { CacheRepository } from "../../../../core/infra/database/repositories/cache.repository";
 
 export class GetAccountUseCase {
+    constructor(private repository: AccountRepository, private cacheRepository: CacheRepository) {}
+
     async run(username: string): Promise<AccountEntity> {
-        const repository = new AccountRepository();
-        const cacheRepository = new CacheRepository();
         let account: AccountEntity;
 
-        const cachedUser = await cacheRepository.get(`users:${username}`);
+        const cachedUser = await this.cacheRepository.get(`users:${username}`);
         if (cachedUser) {
             return {
                 ...cachedUser,
@@ -18,12 +18,12 @@ export class GetAccountUseCase {
         }
 
         try {
-            account = await repository.getByUsername(username);
+            account = await this.repository.getByUsername(username);
         } catch (error) {
             throw new ServerError('Erro na comunicação com o banco');
         }
 
-        await cacheRepository.setEx(`users:${username}`, account);
+        await this.cacheRepository.setEx(`users:${username}`, account);
 
         return account;
     }

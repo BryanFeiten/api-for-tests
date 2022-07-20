@@ -7,6 +7,8 @@ import { DeleteAccountUseCase } from "../../domain/usecases";
 import { CustomError } from "../../../../shared/presentation/errors/custom.error";
 
 export class DeleteAccountController {
+    constructor(private usecase: DeleteAccountUseCase) {}
+
     async handle(request: Request, response: Response) {
         try {
             const {
@@ -14,9 +16,7 @@ export class DeleteAccountController {
                 password,
             } = request.body;
 
-            const useCase = new DeleteAccountUseCase();
-
-            await useCase.run(accountUid, password);
+            await this.usecase.run(accountUid, password);
 
             return response.status(200).json({
                 success: true,

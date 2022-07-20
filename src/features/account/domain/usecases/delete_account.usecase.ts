@@ -5,11 +5,10 @@ import { BadRequestError, ServerError } from '../../../../shared/presentation/er
 import { AccountRepository } from "../../infra/database/repositories/account.repository";
 
 export class DeleteAccountUseCase {
-    async run(uid: string, password: string): Promise<void> {
-        const cacheRepository = new CacheRepository();
-        const repository = new AccountRepository();
+    constructor(private repository: AccountRepository, private cacheRepository: CacheRepository) {}
 
-        const account = await repository.getByUid(uid);
+    async run(uid: string, password: string): Promise<void> {
+        const account = await this.repository.getByUid(uid);
 
         if (!account) {
             throw new BadRequestError("Usuário não encontrado");
@@ -20,12 +19,12 @@ export class DeleteAccountUseCase {
         }
 
         try {
-            await repository.delete(uid);
+            await this.repository.delete(uid);
         } catch (error) {
             throw new ServerError('Erro na comunicação com o banco');
         }
 
-        await cacheRepository.delete("users");
-        await cacheRepository.delete(`users:${account.username}`);
+        await this.cacheRepository.delete("users");
+        await this.cacheRepository.delete(`users:${account.username}`);
     }
 }

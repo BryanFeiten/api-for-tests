@@ -8,12 +8,13 @@ import { UpdateAccountUseCase } from "../../domain/usecases";
 import { CustomError } from "../../../../shared/presentation/errors/custom.error";
 
 export class UpdateAccountController {
+    constructor(private usecase: UpdateAccountUseCase) { }
+
     async handle(request: Request, response: Response) {
         const { accountUid, firstName, lastName } = request.body;
 
         try {
-            const useCase = new UpdateAccountUseCase();
-            await useCase.run(
+            await this.usecase.run(
                 new AccountDto(accountUid, firstName.trim() ?? '', lastName.trim() ?? '', '', ''),
             );
 

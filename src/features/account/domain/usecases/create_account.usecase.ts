@@ -8,10 +8,9 @@ import { BadRequestError, ServerError } from "../../../../shared/presentation/er
 import { CacheRepository } from "../../../../core/infra/database/repositories/cache.repository";
 
 export class CreateAccountUseCase {
-    async run(account: AccountDto): Promise<boolean> {
-        const repository = new AccountRepository();
-        const cacheRepository = new CacheRepository();
+    constructor(private repository: AccountRepository, private cacheRepository: CacheRepository) {}
 
+    async run(account: AccountDto): Promise<boolean> {
         let accountCreated: boolean;
 
         charactersLengthValidator(account.username.trim(), 'Nome de Usuário', 3, 30);
@@ -23,7 +22,7 @@ export class CreateAccountUseCase {
         let emailAlreadyExists = true;
 
         try {
-            emailAlreadyExists = await repository.getByEmail(account.email);
+            emailAlreadyExists = await this.repository.getByEmail(account.email);
         } catch (error) {
             throw new ServerError('Erro na comunicação com o banco');
         }
@@ -35,7 +34,7 @@ export class CreateAccountUseCase {
         let usernameAlreadyExists: boolean;
 
         try {
-            usernameAlreadyExists = !!await repository.getByUsername(account.username);
+            usernameAlreadyExists = !!await this.repository.getByUsername(account.username);
         } catch (error) {
             usernameAlreadyExists = false;
         }
@@ -44,12 +43,12 @@ export class CreateAccountUseCase {
             throw new BadRequestError('Nome de usuário não está disponível');
         }
 
-        accountCreated = await repository.create(account);
+        accountCreated = await this.repository.create(account);
 
         if (!accountCreated) {
             throw new ServerError('Erro ao criar usuário');
         }
-        await cacheRepository.delete("users");
+        await this.cacheRepository.delete("users");
 
         return accountCreated;
     }

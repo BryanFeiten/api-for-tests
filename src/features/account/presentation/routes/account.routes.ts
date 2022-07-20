@@ -20,30 +20,58 @@ import {
 } from '../middlewares';
 
 import { AuthMiddleware } from '../../../../shared/presentation/middlewares/authentication.middleware';
+import { AccountRepository } from '../../infra/database/repositories/account.repository';
+import { CreateAccountUseCase, DeleteAccountUseCase, GetAccountListUseCase, GetAccountUseCase, UpdateAccountUseCase } from '../../domain/usecases';
+import { CacheRepository } from '../../../../core/infra/database/repositories/cache.repository';
 
 export class AccountRoutes {
     static getRoutes() {
         const router = Router();
 
-        router.post('/', CreateAccountMiddleware, (request: Request, response: Response) => {
-            return new CreateAccountController().handle(request, response);
-        });
+        const accountRepository = new AccountRepository();
+        const cacheRepository = new CacheRepository();
 
-        router.get('/:username', [AuthMiddleware, GetAccountByUsernameMiddleware], (request: Request, response: Response) => {
-            return new GetAccountController().handle(request, response);
-        });
+        const createAccountUseCase = new CreateAccountUseCase(accountRepository, cacheRepository);
+        const deleteAccountUseCase = new DeleteAccountUseCase(accountRepository, cacheRepository);
+        const getAccountUseCase = new GetAccountUseCase(accountRepository, cacheRepository);
+        const getAccountListUseCase = new GetAccountListUseCase(accountRepository, cacheRepository);
+        const updateAccountUseCase = new UpdateAccountUseCase(accountRepository, cacheRepository);
 
-        router.get('/', AuthMiddleware, (request: Request, response: Response) => {
-            return new AccountListController().handle(request, response);
-        });
+        const createAccountController = new CreateAccountController(createAccountUseCase);
+        const deleteAccountController = new DeleteAccountController(deleteAccountUseCase);
+        const getAccountController = new GetAccountController(getAccountUseCase);
+        const getAccountListController = new AccountListController(getAccountListUseCase);
+        const updateAccountController = new UpdateAccountController(updateAccountUseCase);
 
-        router.delete('/', [AuthMiddleware, DeleteAccountMiddleware], (request: Request, response: Response) => {
-            return new DeleteAccountController().handle(request, response);
-        });
+        router.post(
+            '/',
+            CreateAccountMiddleware,
+            (req: Request, res: Response) => createAccountController.handle(req, res),
+        );
 
-        router.put('/', [AuthMiddleware, UpdateAccountMiddleware], (request: Request, response: Response) => {
-            return new UpdateAccountController().handle(request, response);
-        });
+        router.get(
+            '/:username',
+            [AuthMiddleware, GetAccountByUsernameMiddleware],
+            (req: Request, res: Response) => getAccountController.handle(req, res),
+        );
+
+        router.get(
+            '/',
+            AuthMiddleware,
+            (req: Request, res: Response) => getAccountListController.handle(req, res),
+        );
+
+        router.delete(
+            '/',
+            [AuthMiddleware, DeleteAccountMiddleware],
+            (req: Request, res: Response) => deleteAccountController.handle(req, res),
+        );
+
+        router.put(
+            '/',
+            [AuthMiddleware, UpdateAccountMiddleware],
+            (req: Request, res: Response) => updateAccountController.handle(req, res),
+        );
 
         return router;
     }

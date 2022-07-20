@@ -7,12 +7,13 @@ import { GetAccountUseCase } from "../../domain/usecases";
 import { CustomError } from "../../../../shared/presentation/errors/custom.error";
 
 export class GetAccountController {
+    constructor(private usecase: GetAccountUseCase) {}
+
     async handle(request: Request, response: Response) {
         const { username } = request.params;
-        const useCase = new GetAccountUseCase();
 
         try {
-            const result = await useCase.run(username);
+            const result = await this.usecase.run(username);
 
             return response.status(200).json({
                 success: true,

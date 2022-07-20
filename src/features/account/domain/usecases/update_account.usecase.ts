@@ -7,9 +7,9 @@ import { AccountDto } from "../dtos/account.dto";
 import { NotFoundError, ServerError } from '../../../../shared/presentation/errors';
 
 export class UpdateAccountUseCase {
+    constructor(private repository: AccountRepository, private cacheRepository: CacheRepository) {}
+    
     async run(account: AccountDto): Promise<boolean> {
-        const cacheRepository = new CacheRepository();
-        const repository = new AccountRepository();
         let actualAccount: AccountEntity | undefined;
         let accountUpdated: boolean;
 
@@ -22,7 +22,7 @@ export class UpdateAccountUseCase {
         }
 
         try {
-            actualAccount = await repository.getByUid(account.uid!);
+            actualAccount = await this.repository.getByUid(account.uid!);
         } catch (error) {
             throw new NotFoundError('Usuário não encontrado');
         }
@@ -30,14 +30,14 @@ export class UpdateAccountUseCase {
         try {
             if (!actualAccount) throw new NotFoundError('Usuário não encontrado');
 
-            accountUpdated = await repository.update(account, actualAccount);
+            accountUpdated = await this.repository.update(account, actualAccount);
         } catch (error) {
             throw new ServerError('Erro na comunicação com o banco');
         }
 
-        await cacheRepository.delete("users");
+        await this.cacheRepository.delete("users");
 
-        await cacheRepository.setEx(`users:${account.username}`, account);
+        await this.cacheRepository.setEx(`users:${account.username}`, account);
         return accountUpdated;
     }
 }
