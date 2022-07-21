@@ -27,7 +27,7 @@ export class AuthenticationRepository {
     }
 
     async validatePassword(userUid: string, password: string): Promise<boolean> {
-        const account = await this._repository.findOne(userUid);
+        const account = await this._repository.findOne({ where: { uid: userUid } });
 
         if (!account) return false;
 

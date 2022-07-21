@@ -10,7 +10,7 @@ export class UpdateAccountUseCase {
     constructor(private repository: AccountRepository, private cacheRepository: CacheRepository) {}
     
     async run(account: AccountDto): Promise<boolean> {
-        let actualAccount: AccountEntity | undefined;
+        let actualAccount: AccountEntity | null;
         let accountUpdated: boolean;
 
         if (account.firstName.isNotEmpty()) {

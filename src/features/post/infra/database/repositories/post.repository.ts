@@ -23,7 +23,7 @@ export class PostRepository {
   }
 
   async getByUid(uid: string): Promise<PostEntity> {
-    const post = await this._repository.findOneOrFail(uid);
+    const post = await this._repository.findOneOrFail({where: {uid: uid}});
 
     return post;
   }

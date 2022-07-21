@@ -23,10 +23,11 @@ export class SignInUseCase {
         } catch (error) {
             throw new BadRequestError('E-mail ou Senha incorreto(s)');
         }
-
+        
         if (userUid.isEmpty()) {
             throw new BadRequestError('E-mail ou Senha incorreto(s)');
         }
+        
         try {
             logged = await this.repository.validatePassword(userUid, signInDto.password);
         } catch (error) {

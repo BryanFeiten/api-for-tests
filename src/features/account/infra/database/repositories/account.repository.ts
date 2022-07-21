@@ -38,8 +38,8 @@ export class AccountRepository {
         });
     }
 
-    async getByUid(uid: string): Promise<AccountEntity | undefined> {
-        const account = await this._repository.findOne(uid);
+    async getByUid(uid: string): Promise<AccountEntity | null> {
+        const account = await this._repository.findOne({ where: { uid: uid } });
 
         return account;
     }
