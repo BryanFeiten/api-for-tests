@@ -1,8 +1,7 @@
 import { Server } from './core/presentation/server/index';
-import { DatabaseConnection } from './core/infra/database/connections/database.connection';
+import { DatabaseConnection, RedisConnection } from './core/infra/database/connections';
 
 import 'dotenv/config';
-import { RedisConnection } from './core/infra/database/connections/redis.connection';
 
 DatabaseConnection.getInstance().then(() => {
     RedisConnection.initialize();
