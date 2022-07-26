@@ -11,7 +11,7 @@
     "migration:revert": "ts-node-dev --transpile-only ./node_modules/typeorm/cli.js migration:revert",
     "migration:test": "cross-env NODE_ENV=test && yarn migration:run",
     "test": "cross-env NODE_ENV=test && yarn jest --passWithNoTests --silent --noStackTrace --runInBand",
-    "test:verbose": "cross-env NODE_ENV=test && yarn test:setup && jest --passWithNoTests --runInBand --detectOpenHandles",
+    "test:verbose": "cross-env NODE_ENV=test && jest --passWithNoTests --runInBand --detectOpenHandles",
     "test:coverage": "test --coverage",
     "test:unit": "tests --watchAll -c ./jest-unit.config.ts",
     "test:integration": "tests --watchAll -c ./jest-integration.config.ts"
