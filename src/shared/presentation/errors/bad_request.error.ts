@@ -7,7 +7,7 @@ export class BadRequestError extends CustomError {
   constructor(message: string) {
     const code = 400;
     super(message, code);
-    this.name = 'NotFoundError';
+    this.name = 'BadRequestError';
     this.code = code;
   }
 

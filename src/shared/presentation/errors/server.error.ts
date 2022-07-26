@@ -7,7 +7,7 @@ export class ServerError extends CustomError {
   constructor(message: string) {
     const code = 500;
     super(message, code);
-    this.name = 'NotFoundError';
+    this.name = 'ServerError';
     this.code = code;
   }
 }

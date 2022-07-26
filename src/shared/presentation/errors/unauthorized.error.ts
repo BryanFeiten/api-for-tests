@@ -7,7 +7,7 @@ export class UnauthorizedError extends CustomError {
   constructor(message: string) {
     const code = 401;
     super(message, code);
-    this.name = 'NotFoundError';
+    this.name = 'UnauthorizedError';
     this.code = code;
   }
 }
